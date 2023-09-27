@@ -24,6 +24,7 @@ services:
       SIGNING_KEY: ${SIGNING_KEY}
       DATABASE_URL: mongodb://admin:password@mongo:27017
       CORS_HOST: http://localhost:3000
+      PERENUAL_API_KEY: ${PERENUAL_API_KEY}
     build:
       context: api
       dockerfile: Dockerfile.dev

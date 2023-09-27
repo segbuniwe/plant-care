@@ -1,7 +1,10 @@
 from pydantic import BaseModel
 from queries.client import Queries
 import requests
-from keys import PERENUAL_API_KEY
+import os
+from typing import Optional
+
+api_key = os.environ.get("PERENUAL_API_KEY")
 
 
 class PlantsIn(BaseModel):
@@ -10,12 +13,12 @@ class PlantsIn(BaseModel):
 
 class PlantsOut(PlantsIn):
     id: int
-    default_image: dict
+    default_image: Optional[dict]
 
 
 class PlantOut(PlantsIn):
     id: int
-    default_image: dict
+    default_image: Optional[dict]
     watering: str
     soil: list
     growth_rate: str
@@ -32,7 +35,7 @@ class PlantsRepo(Queries):
 
     def list_plants(self):
         url = "https://perenual.com/api/species-list"
-        params = {"key": PERENUAL_API_KEY, "page": 1}
+        params = {"key": api_key, "page": 1}
         res = requests.get(url, params=params)
         plants = res.json()
         print(plants)
@@ -41,7 +44,7 @@ class PlantsRepo(Queries):
     def get_plant_by_id(self, plant_id: int):
         url = f"https://perenual.com/api/species/details/{plant_id}"
         params = {
-            "key": PERENUAL_API_KEY,
+            "key": api_key,
         }
         res = requests.get(url, params=params)
         data = res.json()
