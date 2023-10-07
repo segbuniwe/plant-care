@@ -38,7 +38,6 @@ class PlantsRepo(Queries):
         params = {"key": api_key, "page": 1}
         res = requests.get(url, params=params)
         plants = res.json()
-        print(plants)
         return plants["data"]
 
     def get_plant_by_id(self, plant_id: int):

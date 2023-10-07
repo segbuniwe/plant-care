@@ -26,7 +26,7 @@ export const plantCareApi = createApi({
                     credentials: 'include',
                 };
             },
-            invalidatesTags: ['Account'],
+            invalidatesTags: ['Account', 'Favorites'],
         }),
         signup: builder.mutation({
             query: (body) => ({
@@ -38,7 +38,7 @@ export const plantCareApi = createApi({
                     'Content-Type': 'application/json',
                 },
             }),
-            invalidatesTags: ['Account'],
+            invalidatesTags: ['Account', 'Favorites'],
         }),
         logout: builder.mutation({
             query: () => ({
@@ -46,7 +46,49 @@ export const plantCareApi = createApi({
                 method: 'DELETE',
                 credentials: 'include',
             }),
-            invalidatesTags: ['Account'],
+            invalidatesTags: ['Account', 'Favorites'],
+        }),
+        getFavorites: builder.query({
+            query: () => ({
+                url: '/api/favorites/mine',
+                credentials: 'include',
+            }),
+            transformResponse: (response) => response.favorites,
+            providesTags: ['Favorites'],
+        }),
+        createFavorite: builder.mutation({
+            query: (body) => ({
+                url: '/api/favorites',
+                method: 'POST',
+                body,
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }),
+            invalidatesTags: ['Favorites', 'Account'],
+        }),
+        deleteFavorite: builder.mutation({
+            query: (favorite_id) => ({
+                url: `api/favorites/${favorite_id}`,
+                method: 'DELETE',
+                credentials: 'include',
+            }),
+            invalidatesTags: ['Favorites', 'Account'],
+        }),
+        getPlants: builder.query({
+            query: () => ({
+                url: '/api/plants',
+                credentials: 'include',
+            }),
+            transformResponse: (response) => response.plants,
+            providesTags: ['Recipes'],
+        }),
+        getPlantByID: builder.query({
+            query: (plant_id) => ({
+                url: `/api/plants/${plant_id}`,
+                credentials: 'include',
+            }),
         }),
     }),
 });
@@ -56,4 +98,9 @@ export const {
     useLoginMutation,
     useLogoutMutation,
     useSignupMutation,
+    useGetFavoritesQuery,
+    useCreateFavoriteMutation,
+    useDeleteFavoriteMutation,
+    useGetPlantsQuery,
+    useGetPlantByIDQuery,
 } = plantCareApi;
