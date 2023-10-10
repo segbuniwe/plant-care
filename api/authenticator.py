@@ -33,7 +33,7 @@ class PlantCareAuthenticator(Authenticator):
     def get_account_data_for_cookie(self, account: AccountOut):
         # Return the username and the data for the cookie.
         # You must return TWO values from this method.
-        return account.email, AccountOut(**account.dict())
+        return account.username, AccountOut(**account.dict())
 
 
 authenticator = PlantCareAuthenticator(os.environ["SIGNING_KEY"])
