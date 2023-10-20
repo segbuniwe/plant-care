@@ -11,12 +11,17 @@ from queries.accounts import (
 class PlantCareAuthenticator(Authenticator):
     async def get_account_data(
         self,
-        username: str,
+        identifier: str,
         accounts: AccountRepo,
     ):
-        # Use your repo to get the account based on the
-        # username (which could be an email)
-        return accounts.get_account(username)
+        is_email = "@" in identifier
+        account = (
+            accounts.get_account_by_email(identifier)
+            if is_email
+            else accounts.get_account_by_username(identifier)
+        )
+
+        return account
 
     def get_account_getter(
         self,

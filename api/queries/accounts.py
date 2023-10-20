@@ -29,8 +29,15 @@ class AccountOutWithHashedPassword(AccountOut):
 class AccountRepo(Queries):
     COLLECTION = "accounts"
 
-    def get_account(self, username: str) -> AccountOutWithHashedPassword:
+    def get_account_by_username(self, username: str):
         account = self.collection.find_one({"username": username})
+        if account is None:
+            return None
+        account["id"] = str(account["_id"])
+        return AccountOutWithHashedPassword(**account)
+
+    def get_account_by_email(self, email: str) -> AccountOutWithHashedPassword:
+        account = self.collection.find_one({"email": email})
         if account is None:
             return None
         account["id"] = str(account["_id"])
